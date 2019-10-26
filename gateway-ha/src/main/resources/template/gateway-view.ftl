@@ -58,7 +58,7 @@
         <#list backendConfigurations as bc>
             <tr>
                 <td>  ${bc.name}</td>
-                <td><a href="${bc.proxyTo}" target="_blank">${bc.proxyTo}</a></td>
+                <td><a href="${bc.proxyTo}/bigo_presto_monitor_ui" target="_blank">${bc.proxyTo}</a></td>
                 <td> ${bc.routingGroup}</td>
             </tr>
         </#list>

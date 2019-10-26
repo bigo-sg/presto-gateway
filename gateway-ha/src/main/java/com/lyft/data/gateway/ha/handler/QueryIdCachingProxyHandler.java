@@ -28,7 +28,7 @@ public class QueryIdCachingProxyHandler extends ProxyHandler {
   public static final String V1_STATEMENT_PATH = "/v1/statement";
   public static final String V1_QUERY_PATH = "/v1/query";
   public static final String V1_INFO_PATH = "/v1/info";
-  public static final String PRESTO_UI_PATH = "/ui";
+  public static final String PRESTO_UI_PATH = "/bigo_presto_monitor_ui";
   public static final String USER_HEADER = "X-Presto-User";
   public static final String SOURCE_HEADER = "X-Presto-Source";
   public static final String ROUTING_GROUP_HEADER = "X-Presto-Routing-Group";
