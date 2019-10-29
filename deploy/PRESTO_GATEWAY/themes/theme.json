@@ -1,0 +1,57 @@
+{
+  "name": "default",
+  "description": "Default theme for Presto service",
+  "configuration": {
+    "layouts": [
+      {
+        "name": "default",
+        "tabs": [
+          {
+            "name": "settings",
+            "display-name": "Settings",
+            "layout": {
+              "tab-columns": "2",
+              "tab-rows": "3",
+              "sections": [
+                {
+                  "name": "section-jvm-config",
+                  "display-name": "Gate Way Config",
+                  "row-index": "2",
+                  "column-index": "0",
+                  "row-span": "1",
+                  "column-span": "1",
+                  "subsections": [
+                    {
+                      "name": "subsection-jvm-config",
+                      "row-index": "0",
+                      "column-index": "0",
+                      "row-span": "1",
+                      "column-span": "1"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placement": {
+      "configuration-layout": "default",
+      "configs": [
+        {
+          "config": "gateway-ha-config.yml/gateway-ha-config.yml",
+          "subsection-name": "subsection-jvm-config"
+        }
+      ]
+    },
+    "widgets": [
+      {
+        "config": "gateway-ha-config.yml/gateway-ha-config.yml",
+        "widget": {
+          "type": "text-area"
+        }
+      }
+    ]
+  }
+}

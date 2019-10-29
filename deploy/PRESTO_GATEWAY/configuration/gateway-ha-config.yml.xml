@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!--
+# -*- coding: utf-8 -*-
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+-->
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>gateway-ha-config.yml</name>
+    <value>
+requestRouter:
+  port: 8080
+  name: prestoRouter
+  historySize: 1000
+
+dataStore:
+  jdbcUrl: jdbc:mysql://127.0.0.1:3306/prestogateway
+  user: root
+  password: root123
+  driver: com.mysql.cj.jdbc.Driver
+
+server:
+  applicationConnectors:
+    - type: http
+    port: 8090
+  adminConnectors:
+    - type: http
+    port: 8091
+
+notifier:
+  smtpHost: localhost
+  smtpPort: 587
+  sender: presto-gw-monitor-noreply@lyft.com
+  recipients:
+    - prestodev@yourorg.com
+
+modules:
+  - com.lyft.data.gateway.ha.module.HaGatewayProviderModule
+
+  managedApps:
+  - com.lyft.data.gateway.ha.GatewayManagedApp
+
+# Logging settings.
+logging:
+    # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+    level: INFO
+
+  # Logger-specific levels.
+  loggers:
+    com.lyft: DEBUG
+
+  appenders:
+    - type: console
+    - type: file
+    currentLogFilename: /var/log/prestoproxy/prestoproxy-java.log
+    archivedLogFilenamePattern: /var/log/prestoproxy/prestoproxy-java-%d{yyyy-MM-dd}-%i.log.gz
+    archivedFileCount: 7
+    timeZone: UTC
+    maxFileSize: 100MB
+    </value>
+    <description>
+      config
+    </description>
+  </property>
+</configuration>
