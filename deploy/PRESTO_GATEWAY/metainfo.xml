@@ -42,6 +42,7 @@
 
       <configuration-dependencies>
         <config-type>gateway-ha-config.yml</config-type>
+        <config-type>presto_gateway.jvm.config</config-type>
       </configuration-dependencies>
 
       <themes>

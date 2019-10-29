@@ -43,19 +43,22 @@ class GateWay(Script):
 
     def stop(self, env):
         from params import *
-        Execute(('/data/opt/presto_gateway/oms_current/start.sh',
+        Execute(('/data/opt/presto_gateway/oms_current/gateway.sh',
                  'stop',
                  pid_path + '/process.pid'
                  ))
 
     def start(self, env):
         from params import *
+        from common import get_jvm_params
         self.configure(env)
-        Execute(('/data/opt/presto_gateway/oms_current/start.sh',
+
+        jvm_params = get_jvm_params(config_directory + '/presto_gateway.jvm.config')
+        Execute(('/data/opt/presto_gateway/oms_current/gateway.sh',
                  'start',
                  pid_path + '/process.pid',
                  bin_path,
-                 '-Xms1G -Xmx1G',
+                 jvm_params,
                  config_directory + '/gateway-ha-config.yml',
                  ),
                 environment={'JAVA_HOME': '/data/opt/jdk/current'})
@@ -66,10 +69,18 @@ class GateWay(Script):
 
     def configure(self, env):
         from params import *
+        print config
         conf = config['configurations']
         gateway_config = conf['gateway-ha-config.yml']
         f = open(config_directory + '/gateway-ha-config.yml', 'wb')
         f.write(gateway_config['gateway-ha-config.yml'])
+        f.close()
+
+        gateway_config = conf['presto_gateway.jvm.config']
+        print gateway_config
+        f = open(config_directory + '/presto_gateway.jvm.config', 'wb')
+        f.write(gateway_config['presto_gateway.jvm.config'])
+        f.close()
 
 if __name__ == '__main__':
     GateWay().execute()
