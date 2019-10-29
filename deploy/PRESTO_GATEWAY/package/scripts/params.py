@@ -24,6 +24,6 @@ etc_dir = '/etc/presto'
 
 config_directory = '/etc/presto_gateway'
 pid_path = '/var/presto/gateway/pid'
-bin_path = '/data/opt/presto_gateway/bin/gateway-ha-1.6.4-jar-with-dependencies.jar'
+bin_path = '/data/opt/presto_gateway/oms_current/gateway-ha-1.6.4-jar-with-dependencies.jar'
 daemon_control_script = 'java -jar ' + bin_path + \
                         ' ' + config_directory + '/gateway-ha-config.yml'

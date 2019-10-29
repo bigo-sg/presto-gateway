@@ -43,7 +43,7 @@ class GateWay(Script):
 
     def stop(self, env):
         from params import *
-        Execute(('/data/opt/presto_gateway/oms_current/start.sh',
+        Execute(('/data/opt/presto_gateway/oms_current/gateway.sh',
                  'stop',
                  pid_path + '/process.pid'
                  ))
@@ -51,7 +51,7 @@ class GateWay(Script):
     def start(self, env):
         from params import *
         self.configure(env)
-        Execute(('/data/opt/presto_gateway/oms_current/start.sh',
+        Execute(('/data/opt/presto_gateway/oms_current/gateway.sh',
                  'start',
                  pid_path + '/process.pid',
                  bin_path,
