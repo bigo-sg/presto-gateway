@@ -22,11 +22,18 @@
                   "column-span": "1",
                   "subsections": [
                     {
-                      "name": "subsection-jvm-config",
+                      "name": "subsection-gateway-config",
                       "row-index": "0",
                       "column-index": "0",
                       "row-span": "1",
                       "column-span": "1"
+                    },
+                    {
+                      "name": "subsection-jvm-config",
+                      "row-index": "0",
+                      "column-index": "0",
+                      "row-span": "1",
+                      "column-span": "2"
                     }
                   ]
                 }
@@ -41,6 +48,10 @@
       "configs": [
         {
           "config": "gateway-ha-config.yml/gateway-ha-config.yml",
+          "subsection-name": "subsection-gateway-config"
+        },
+        {
+          "config": "presto_gateway.jvm.config/presto_gateway.jvm.config",
           "subsection-name": "subsection-jvm-config"
         }
       ]
@@ -48,6 +59,12 @@
     "widgets": [
       {
         "config": "gateway-ha-config.yml/gateway-ha-config.yml",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "presto_gateway.jvm.config/presto_gateway.jvm.config",
         "widget": {
           "type": "text-area"
         }

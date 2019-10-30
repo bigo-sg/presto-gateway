@@ -6,7 +6,7 @@ jar_path=$3
 jvm_config=$4
 config=$5
 echo $@
-export JAVA_HOME=/data/opt/jdk/current
+export JAVA_HOME=/data/opt/jdk/presto/current
 export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
