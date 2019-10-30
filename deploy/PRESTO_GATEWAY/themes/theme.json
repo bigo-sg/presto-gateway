@@ -14,11 +14,11 @@
               "tab-rows": "3",
               "sections": [
                 {
-                  "name": "section-jvm-config",
+                  "name": "section-gateway-config",
                   "display-name": "Gate Way Config",
-                  "row-index": "2",
+                  "row-index": "1",
                   "column-index": "0",
-                  "row-span": "1",
+                  "row-span": "5",
                   "column-span": "1",
                   "subsections": [
                     {
@@ -27,13 +27,23 @@
                       "column-index": "0",
                       "row-span": "1",
                       "column-span": "1"
-                    },
+                    }
+                  ]
+                },
+                {
+                  "name": "section-jvm-config",
+                  "display-name": "Gate Way Jvm Config",
+                  "row-index": "2",
+                  "column-index": "0",
+                  "row-span": "5",
+                  "column-span": "1",
+                  "subsections": [
                     {
                       "name": "subsection-jvm-config",
                       "row-index": "0",
                       "column-index": "0",
                       "row-span": "1",
-                      "column-span": "2"
+                      "column-span": "1"
                     }
                   ]
                 }

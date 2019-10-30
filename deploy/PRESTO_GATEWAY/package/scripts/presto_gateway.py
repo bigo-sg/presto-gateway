@@ -69,6 +69,7 @@ class GateWay(Script):
 
     def configure(self, env):
         from params import *
+        print config
         conf = config['configurations']
         gateway_config = conf['gateway-ha-config.yml']
         f = open(config_directory + '/gateway-ha-config.yml', 'wb')
@@ -76,6 +77,7 @@ class GateWay(Script):
         f.close()
 
         gateway_config = conf['presto_gateway.jvm.config']
+        print gateway_config
         f = open(config_directory + '/presto_gateway.jvm.config', 'wb')
         f.write(gateway_config['presto_gateway.jvm.config'])
         f.close()

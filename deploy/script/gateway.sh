@@ -13,7 +13,7 @@ export PATH=${JAVA_HOME}/bin:$PATH
 
 if [ ${cmd} == "start" ]
 then
-    echo "nohup java -jar ${jvm_config} ${jar_path} server ${config} > /tmp/gateway.log 2>&1 &"
+    echo "nohup java -jar ${jvm_config} ${jar_path} server ${config} > /tmp/gateway.log 2>&1 &" > /data1/var/presto/prestoproxy/nohup.out
     nohup java -jar ${jvm_config} ${jar_path} server ${config} > /tmp/gateway.log 2>&1 &
     sleep 5
     pid=`ps -aux | grep gateway-ha|grep 'presto_gateway'|grep -v 'start'|awk '{print $2}'`
