@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.io.CharStreams;
 import com.lyft.data.gateway.ha.router.QueryHistoryManager;
 import com.lyft.data.gateway.ha.router.RoutingManager;
+import com.lyft.data.gateway.ha.router.strategy.QueryHeader;
 import com.lyft.data.proxyserver.ProxyHandler;
 import com.lyft.data.proxyserver.wrapper.MultiReadHttpServletRequest;
 
@@ -96,8 +97,12 @@ public class QueryIdCachingProxyHandler extends ProxyHandler {
       } else {
         String routingGroup = request.getHeader(ROUTING_GROUP_HEADER);
         if (!Strings.isNullOrEmpty(routingGroup)) {
+          QueryHeader queryHeader = new QueryHeader();
+          queryHeader.setRoutingGroup(routingGroup);
+          queryHeader.setSource(request.getHeader(SOURCE_HEADER));
+          queryHeader.setUser(request.getHeader(USER_HEADER));
           // This falls back on adhoc backend if there are no cluster found for the routing group.
-          backendAddress = routingManager.provideBackendForRoutingGroup(routingGroup);
+          backendAddress = routingManager.provideBackendForHeader(queryHeader);
         } else {
           backendAddress = routingManager.provideAdhocBackend();
         }
