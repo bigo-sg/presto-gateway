@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class QueryInfo {
 
-    private Session session;
-    private QueryState state;
+  private Session session;
+  private QueryState state;
 }

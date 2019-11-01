@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class QueryHeader {
-    private String user;
-    private String source;
-    private String routingGroup;
+  private String user;
+  private String source;
+  private String routingGroup;
 }

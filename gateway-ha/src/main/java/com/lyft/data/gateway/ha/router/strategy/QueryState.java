@@ -8,51 +8,50 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum QueryState {
-    /**
-     * Query has been accepted and is awaiting execution.
-     */
-    QUEUED(false),
-    /**
-     * Query is waiting for the required resources (beta).
-     */
-    WAITING_FOR_RESOURCES(false),
-    /**
-     * Query is being dispatched to a coordinator.
-     */
-    DISPATCHING(false),
-    /**
-     * Query is being planned.
-     */
-    PLANNING(false),
-    /**
-     * Query execution is being started.
-     */
-    STARTING(false),
-    /**
-     * Query has at least one running task.
-     */
-    RUNNING(false),
-    /**
-     * Query is finishing (e.g. commit for autocommit queries)
-     */
-    FINISHING(false),
-    /**
-     * Query has finished executing and all output has been consumed.
-     */
-    FINISHED(true),
-    /**
-     * Query execution failed.
-     */
-    FAILED(true);
+  /**
+   * Query has been accepted and is awaiting execution.
+   */
+  QUEUED(false),
+  /**
+   * Query is waiting for the required resources (beta).
+   */
+  WAITING_FOR_RESOURCES(false),
+  /**
+   * Query is being dispatched to a coordinator.
+   */
+  DISPATCHING(false),
+  /**
+   * Query is being planned.
+   */
+  PLANNING(false),
+  /**
+   * Query execution is being started.
+   */
+  STARTING(false),
+  /**
+   * Query has at least one running task.
+   */
+  RUNNING(false),
+  /**
+   * Query is finishing (e.g. commit for autocommit queries)
+   */
+  FINISHING(false),
+  /**
+   * Query has finished executing and all output has been consumed.
+   */
+  FINISHED(true),
+  /**
+   * Query execution failed.
+   */
+  FAILED(true);
 
-    private final boolean doneState;
+  private final boolean doneState;
 
-    /**
-     * Is this a terminal state.
-     */
-    public boolean isDone()
-    {
-        return doneState;
-    }
+  /**
+   * Is this a terminal state.
+   */
+  public boolean isDone() {
+    return doneState;
+  }
 
 }

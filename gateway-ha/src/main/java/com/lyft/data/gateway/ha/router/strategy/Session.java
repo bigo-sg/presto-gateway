@@ -10,13 +10,13 @@ import java.util.List;
  */
 @Data
 public class Session {
-    private String queryId;
-    private String user;
-    private String source;
-    private String catalog;
-    private String schema;
-    private String remoteUserAddress;
-    private String userAgent;
-    private List<String> clientTags;
-    private long startTime;
+  private String queryId;
+  private String user;
+  private String source;
+  private String catalog;
+  private String schema;
+  private String remoteUserAddress;
+  private String userAgent;
+  private List<String> clientTags;
+  private long startTime;
 }

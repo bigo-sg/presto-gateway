@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Data
 public class ClusterInfo {
-    private ClusterState clusterState;
-    private List<QueryInfo> queryInfos;
-    private ProxyServerConfiguration proxyServerConfiguration;
+  private ClusterState clusterState;
+  private List<QueryInfo> queryInfos;
+  private ProxyServerConfiguration proxyServerConfiguration;
 }
