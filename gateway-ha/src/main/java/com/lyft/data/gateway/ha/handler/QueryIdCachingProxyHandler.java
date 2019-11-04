@@ -96,16 +96,12 @@ public class QueryIdCachingProxyHandler extends ProxyHandler {
         backendAddress = routingManager.findBackendForQueryId(queryId);
       } else {
         String routingGroup = request.getHeader(ROUTING_GROUP_HEADER);
-        if (!Strings.isNullOrEmpty(routingGroup)) {
-          QueryHeader queryHeader = new QueryHeader();
-          queryHeader.setRoutingGroup(routingGroup);
-          queryHeader.setSource(request.getHeader(SOURCE_HEADER));
-          queryHeader.setUser(request.getHeader(USER_HEADER));
-          // This falls back on adhoc backend if there are no cluster found for the routing group.
-          backendAddress = routingManager.provideBackendForHeader(queryHeader);
-        } else {
-          backendAddress = routingManager.provideAdhocBackend();
-        }
+        QueryHeader queryHeader = new QueryHeader();
+        queryHeader.setRoutingGroup(routingGroup);
+        queryHeader.setSource(request.getHeader(SOURCE_HEADER));
+        queryHeader.setUser(request.getHeader(USER_HEADER));
+        // This falls back on adhoc backend if there are no cluster found for the routing group.
+        backendAddress = routingManager.provideBackendForHeader(queryHeader);
       }
       // set target backend so that we could save queryId to backend mapping later.
       ((MultiReadHttpServletRequest) request).addHeader(PROXY_TARGET_HEADER, backendAddress);

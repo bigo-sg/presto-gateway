@@ -43,6 +43,9 @@ public class ClusterUtils {
     String data = getPrestoData(url);
     ObjectMapper mapper = new ObjectMapper();
     ClusterState clusterState = null;
+    if (data == null) {
+      return clusterState;
+    }
     try {
       clusterState = mapper.readValue(data, ClusterState.class);
     } catch (IOException e) {
@@ -58,7 +61,12 @@ public class ClusterUtils {
     }
     List<QueryInfo> queryInfos = getQueryInfo(proxyServerConfiguration, queryStates.get(0));
     for (int i = 1; i < queryStates.size(); ++i) {
-      queryInfos.addAll(getQueryInfo(proxyServerConfiguration, queryStates.get(i)));
+      List<QueryInfo> subQueryInfos = getQueryInfo(proxyServerConfiguration, queryStates.get(i));
+      if (subQueryInfos != null) {
+        queryInfos.addAll(subQueryInfos);
+      } else {
+        return null;
+      }
     }
     return queryInfos;
   }
@@ -70,6 +78,9 @@ public class ClusterUtils {
     ObjectMapper mapper = new ObjectMapper();
     JsonNode jsonNode = null;
     List<QueryInfo> queryInfos = new ArrayList<>();
+    if (data == null) {
+      return null;
+    }
     try {
       jsonNode = mapper.readTree(data);
     } catch (IOException e) {
@@ -108,6 +119,11 @@ public class ClusterUtils {
     List<QueryInfo> queryInfos = getQueryInfo(proxyServerConfiguration, queryStates);
     ClusterState clusterState = getClusterState(proxyServerConfiguration);
     ClusterInfo clusterInfo = new ClusterInfo();
+    if (clusterState == null) {
+      clusterInfo.setAlive(false);
+    } else {
+      clusterInfo.setAlive(true);
+    }
     clusterInfo.setClusterState(clusterState);
     clusterInfo.setProxyServerConfiguration(proxyServerConfiguration);
     clusterInfo.setQueryInfos(queryInfos);
@@ -117,7 +133,11 @@ public class ClusterUtils {
   public static List<ClusterInfo> getClusterInfosBeforeFinished(List<ProxyBackendConfiguration> proxyServerConfigurations) {
     List<ClusterInfo> clusterInfos = new ArrayList<>();
     for (ProxyServerConfiguration proxyServerConfiguration : proxyServerConfigurations) {
-      clusterInfos.add(getClusterInfoBeforeFinished(proxyServerConfiguration));
+      ClusterInfo clusterInfo = getClusterInfoBeforeFinished(proxyServerConfiguration);
+      // maybe cluster is not alive
+      if (clusterInfo.isAlive()) {
+        clusterInfos.add(clusterInfo);
+      }
     }
     return clusterInfos;
   }

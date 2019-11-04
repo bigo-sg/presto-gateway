@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Data
 public class ClusterInfo {
+  private boolean alive = true;
   private ClusterState clusterState;
   private List<QueryInfo> queryInfos;
   private ProxyServerConfiguration proxyServerConfiguration;

@@ -45,8 +45,12 @@ public class ResourceBasedRouter extends RoutingManager {
    * @return
    */
   public String provideBackendForHeader(QueryHeader queryHeader) {
+    String routingGroup = queryHeader.getRoutingGroup();
+    if (routingGroup == null) {
+      routingGroup = "adhoc";
+    }
     List<ProxyBackendConfiguration> backends =
-        gatewayBackendManager.getActiveBackends(queryHeader.getRoutingGroup());
+        gatewayBackendManager.getActiveBackends(routingGroup);
     if (backends.isEmpty()) {
       return provideAdhocBackend();
     }
@@ -86,27 +90,6 @@ public class ResourceBasedRouter extends RoutingManager {
       return selectedClusters.get(0).getProxyServerConfiguration().getProxyTo();
     }
 
-    // less runnable drivers clusters comes first
-    selectedClusters = new ClusterSelector() {
-      @Override
-      int compare(ClusterInfo clusterInfo, long baseLine) {
-        if (clusterInfo.getClusterState().getRunningDrivers() < baseLine) {
-          return 1;
-        } else if (clusterInfo.getClusterState().getRunningDrivers() == baseLine) {
-          return 0;
-        }
-        return -1;
-      }
-
-      @Override
-      long selectedBaseLine(ClusterInfo clusterInfo) {
-        return clusterInfo.getClusterState().getRunningDrivers();
-      }
-    }.select(selectedClusters);
-    if (selectedClusters.size() == 1) {
-      return selectedClusters.get(0).getProxyServerConfiguration().getProxyTo();
-    }
-
     // less queued query clusters comes first
     selectedClusters = new ClusterSelector() {
       @Override
@@ -122,6 +105,27 @@ public class ResourceBasedRouter extends RoutingManager {
       @Override
       long selectedBaseLine(ClusterInfo clusterInfo) {
         return clusterInfo.getClusterState().getQueuedQueries();
+      }
+    }.select(selectedClusters);
+    if (selectedClusters.size() == 1) {
+      return selectedClusters.get(0).getProxyServerConfiguration().getProxyTo();
+    }
+
+    // less runnable drivers clusters comes first
+    selectedClusters = new ClusterSelector() {
+      @Override
+      int compare(ClusterInfo clusterInfo, long baseLine) {
+        if (clusterInfo.getClusterState().getRunningDrivers() < baseLine) {
+          return 1;
+        } else if (clusterInfo.getClusterState().getRunningDrivers() == baseLine) {
+          return 0;
+        }
+        return -1;
+      }
+
+      @Override
+      long selectedBaseLine(ClusterInfo clusterInfo) {
+        return clusterInfo.getClusterState().getRunningDrivers();
       }
     }.select(selectedClusters);
     if (selectedClusters.size() == 1) {
