@@ -13,7 +13,7 @@ import java.util.Properties;
  * @date 11/4/19 10:02 AM
  */
 public class ConnectionUtil {
-  private static final String URL = "jdbc:presto://127.0.0.1:8080/hive/default";
+  private static final String URL = "jdbc:presto://test.presto.bigo.sg:8286/hive/default";
   private static final String JDBC_DRIVER = "com.facebook.presto.jdbc.PrestoDriver";
   private static PrestoConnection connection = null;
   private static Properties initProperties = new Properties();

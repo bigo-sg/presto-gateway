@@ -71,6 +71,50 @@ public class ClusterUtils {
     return queryInfos;
   }
 
+  public static List<QueryInfo> getQueryInfoV1(ProxyServerConfiguration proxyServerConfiguration,
+                                               List<QueryState> queryStates) {
+    StringBuilder stringBuilder = new StringBuilder();
+    queryStates.stream().forEach(new Consumer<QueryState>() {
+      @Override
+      public void accept(QueryState queryState) {
+        stringBuilder.append(",");
+        stringBuilder.append(queryState);
+      }
+    });
+    String url = proxyServerConfiguration.getProxyTo() +
+        "/v1/query/states?states=" + stringBuilder.toString();
+    String data = getPrestoData(url);
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode jsonNode = null;
+    List<QueryInfo> queryInfos = new ArrayList<>();
+    if (data == null) {
+      return null;
+    }
+    try {
+      jsonNode = mapper.readTree(data);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    jsonNode.forEach(new Consumer<JsonNode>() {
+      @Override
+      public void accept(JsonNode jsonNode) {
+        QueryInfo queryInfo = new QueryInfo();
+        QueryState queryState1 = QueryState.valueOf(jsonNode.get("state").asText());
+        Session session = new Session();
+        JsonNode sessionNode = jsonNode.get("session");
+        session.setUser(sessionNode.get("user").asText());
+        session.setUserAgent(sessionNode.get("userAgent").asText());
+        session.setCatalog(sessionNode.get("catalog").asText());
+        session.setQueryId(sessionNode.get("queryId").asText());
+        session.setSource(sessionNode.get("source").asText());
+        queryInfo.setSession(session);
+        queryInfo.setState(queryState1);
+        queryInfos.add(queryInfo);
+      }
+    });
+    return queryInfos;
+  }
+
   private static List<QueryInfo> getQueryInfo(ProxyServerConfiguration proxyServerConfiguration,
                                               QueryState queryState) {
     String url = proxyServerConfiguration.getProxyTo() + "/v1/query?state=" + queryState;
@@ -116,7 +160,7 @@ public class ClusterUtils {
     queryStates.add(QueryState.RUNNING);
     queryStates.add(QueryState.FINISHING);
 
-    List<QueryInfo> queryInfos = getQueryInfo(proxyServerConfiguration, queryStates);
+    List<QueryInfo> queryInfos = getQueryInfoV1(proxyServerConfiguration, queryStates);
     ClusterState clusterState = getClusterState(proxyServerConfiguration);
     ClusterInfo clusterInfo = new ClusterInfo();
     if (clusterState == null) {
