@@ -68,6 +68,11 @@ logging:
     archivedFileCount: 7
     timeZone: UTC
     maxFileSize: 100MB
+
+authConfig:
+  user: admin
+  roles: [ADMIN,USER]
+  password: password
     </value>
     <description>
       config

@@ -5,6 +5,7 @@ import com.lyft.data.gateway.ha.config.ProxyBackendConfiguration;
 import com.lyft.data.gateway.ha.router.GatewayBackendManager;
 import com.lyft.data.gateway.ha.router.HaGatewayManager;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.POST;
 
 import javax.ws.rs.Path;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Path("gateway/backend/modify")
+@RolesAllowed({ "ADMIN" })
 @Produces(MediaType.APPLICATION_JSON)
 public class HaGatewayResource {
 
