@@ -48,12 +48,22 @@ public class GatewayViewResource {
     GatewayView gatewayView = new GatewayView("/template/gateway-view.ftl");
     // Get All active backends
     gatewayView.setBackendConfigurations(
-        gatewayBackendManager.getAllBackends().stream()
-            .filter(ProxyBackendConfiguration::isActive)
-            .collect(Collectors.toList()));
+            gatewayBackendManager.getAllBackends().stream()
+                    .filter(ProxyBackendConfiguration::isActive)
+                    .collect(Collectors.toList()));
 
     gatewayView.setQueryHistory(queryHistoryManager.fetchQueryHistory());
     gatewayView.setQueryDistribution(getQueryHistoryDistribution());
+    return gatewayView;
+  }
+
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("index")
+  public GatewayView getIndex() {
+    GatewayView gatewayView = new GatewayView("/template/index.ftl");
+    gatewayView.setBackendConfigurations(
+            gatewayBackendManager.getAllBackends());
     return gatewayView;
   }
 

@@ -25,4 +25,5 @@ then
     do
         kill -9 ${line}
     done
+    rm ${pid_path}
 fi
