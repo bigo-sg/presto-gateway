@@ -1,14 +1,14 @@
 package com.lyft.data.baseapp.auth;
 
-import lombok.Data;
-
 import java.util.Set;
+
+import lombok.Data;
 
 @Data
 public class AuthConfiguration {
-    private String user;
+  private String user;
 
-    private Set<String> roles;
+  private Set<String> roles;
 
-    private String password;
+  private String password;
 }
