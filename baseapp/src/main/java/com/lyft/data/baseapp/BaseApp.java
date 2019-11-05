@@ -7,9 +7,15 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
+import com.lyft.data.baseapp.auth.AppAuthenticator;
+import com.lyft.data.baseapp.auth.AppAuthorizer;
+import com.lyft.data.baseapp.auth.User;
 import io.dropwizard.Application;
 import io.dropwizard.Bundle;
 import io.dropwizard.Configuration;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.servlets.tasks.Task;
@@ -24,6 +30,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
 
 import lombok.extern.slf4j.Slf4j;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -102,6 +109,16 @@ public abstract class BaseApp<T extends AppConfiguration> extends Application<T>
   @Override
   public void run(T configuration, Environment environment) throws Exception {
     this.injector = configureGuice(configuration, environment);
+
+    environment.jersey().register(new AuthDynamicFeature(
+            new BasicCredentialAuthFilter.Builder<User>()
+                    .setAuthenticator(new AppAuthenticator(configuration.getAuthConfig()))
+                    .setAuthorizer(new AppAuthorizer())
+                    .setRealm("App Security")
+                    .buildAuthFilter()));
+
+    environment.jersey().register(RolesAllowedDynamicFeature.class);
+
     logger.info("op=configure_guice injector={}", injector.toString());
     applicationAtRun(configuration, environment, injector);
     logger.info("op=configure_app_custom completed");

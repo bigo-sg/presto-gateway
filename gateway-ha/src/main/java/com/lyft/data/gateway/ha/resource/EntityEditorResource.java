@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Path("entity")
+@RolesAllowed({ "ADMIN" })
 public class EntityEditorResource {
 
   @Inject private GatewayBackendManager gatewayBackendManager;

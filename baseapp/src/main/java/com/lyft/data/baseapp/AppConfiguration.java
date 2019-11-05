@@ -1,5 +1,6 @@
 package com.lyft.data.baseapp;
 
+import com.lyft.data.baseapp.auth.AuthConfiguration;
 import io.dropwizard.Configuration;
 import java.util.List;
 import lombok.Data;
@@ -14,4 +15,6 @@ public class AppConfiguration extends Configuration {
 
   // List of ManagedApps with FQCN (Fully Qualified Class Name)
   private List<String> managedApps;
+
+  private AuthConfiguration authConfig;
 }
