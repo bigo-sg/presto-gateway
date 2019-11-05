@@ -77,6 +77,7 @@
         <module>baseapp</module>
         <module>proxyserver</module>
         <module>gateway-ha</module>
+        <module>smoke-test</module>
     </modules>
 
     <build>
@@ -112,9 +113,6 @@
                     -->
                     <execution>
                         <phase>test-compile</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

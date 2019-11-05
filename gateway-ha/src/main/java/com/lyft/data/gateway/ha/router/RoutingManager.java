@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.lyft.data.gateway.ha.config.ProxyBackendConfiguration;
+import com.lyft.data.gateway.ha.router.strategy.QueryHeader;
 import com.lyft.data.proxyserver.ProxyServerConfiguration;
 
 import java.net.HttpURLConnection;
@@ -78,12 +79,22 @@ public abstract class RoutingManager {
    */
   public String provideBackendForRoutingGroup(String routingGroup) {
     List<ProxyBackendConfiguration> backends =
-        gatewayBackendManager.getActiveBackends(routingGroup);
+            gatewayBackendManager.getActiveBackends(routingGroup);
     if (backends.isEmpty()) {
       return provideAdhocBackend();
     }
     int backendId = Math.abs(RANDOM.nextInt()) % backends.size();
     return backends.get(backendId).getProxyTo();
+  }
+
+  /**
+   * Performs routing to a given cluster group. This falls back to an adhoc backend, if no scheduled
+   * backend is found.
+   *
+   * @return
+   */
+  public String provideBackendForHeader(QueryHeader queryHeader) {
+    return provideBackendForRoutingGroup(queryHeader.getRoutingGroup());
   }
 
   /**
