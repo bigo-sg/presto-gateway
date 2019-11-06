@@ -41,6 +41,6 @@ public class HaGatewayResource {
   @POST
   public Response removeBackend(String name) {
     ((HaGatewayManager) haGatewayManager).deleteBackend(name);
-    return Response.ok().build();
+    return Response.ok("ok").build();
   }
 }

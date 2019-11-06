@@ -53,7 +53,7 @@ public class GatewayResource {
       log.error(e.getMessage(), e);
       return throwError(e);
     }
-    return Response.ok().build();
+    return Response.ok("ok").build();
   }
 
   @POST
@@ -65,7 +65,7 @@ public class GatewayResource {
       log.error(e.getMessage(), e);
       return throwError(e);
     }
-    return Response.ok().build();
+    return Response.ok("ok").build();
   }
 
   private Response throwError(Exception e) {
