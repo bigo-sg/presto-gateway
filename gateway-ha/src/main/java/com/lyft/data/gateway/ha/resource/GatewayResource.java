@@ -3,6 +3,7 @@ package com.lyft.data.gateway.ha.resource;
 import com.google.inject.Inject;
 import com.lyft.data.gateway.ha.router.GatewayBackendManager;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,11 +13,16 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+
+import io.dropwizard.auth.Auth;
 import lombok.extern.slf4j.Slf4j;
+
+import com.lyft.data.baseapp.auth.User;
 
 @Slf4j
 @Path("/gateway")
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({ "ADMIN" })
 public class GatewayResource {
 
   @Inject private GatewayBackendManager gatewayBackendManager;
@@ -28,7 +34,7 @@ public class GatewayResource {
 
   @GET
   @Path("/backend/all")
-  public Response getAllBackends() {
+  public Response getAllBackends(@Auth User user) {
     return Response.ok(this.gatewayBackendManager.getAllBackends()).build();
   }
 

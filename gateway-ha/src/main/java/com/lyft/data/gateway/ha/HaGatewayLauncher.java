@@ -5,7 +5,9 @@ import com.lyft.data.gateway.ha.config.HaGatewayConfiguration;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.views.ViewBundle;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class HaGatewayLauncher extends BaseApp<HaGatewayConfiguration> {
 
   public HaGatewayLauncher(String... basePackages) {
