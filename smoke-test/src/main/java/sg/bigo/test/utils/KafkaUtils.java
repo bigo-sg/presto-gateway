@@ -65,7 +65,7 @@ public class KafkaUtils implements Runnable {
             String user = jsonNode.get("user").asText();
             String syntax = jsonNode.get("syntax").asText();
             Properties properties = new Properties();
-            properties.setProperty("query_max_execution_time", "5m");
+            properties.setProperty("query_max_execution_time", "1m");
             executor.submit(new Runnable() {
               @Override
               public void run() {

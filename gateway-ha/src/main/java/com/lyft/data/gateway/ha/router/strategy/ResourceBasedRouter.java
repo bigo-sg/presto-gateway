@@ -69,8 +69,32 @@ public class ResourceBasedRouter extends RoutingManager {
       }
     }
 
-    // less running query clusters comes first
+    // less queued + running * 3 query clusters comes first
     List<ClusterInfo> selectedClusters = new ClusterSelector() {
+      @Override
+      int compare(ClusterInfo clusterInfo, long baseLine) {
+        if (clusterInfo.getClusterState().getRunningQueries() * 3 +
+            clusterInfo.getClusterState().getQueuedQueries() < baseLine) {
+          return 1;
+        } else if (clusterInfo.getClusterState().getRunningQueries() * 3 +
+            clusterInfo.getClusterState().getQueuedQueries() == baseLine) {
+          return 0;
+        }
+        return -1;
+      }
+
+      @Override
+      long selectedBaseLine(ClusterInfo clusterInfo) {
+        return clusterInfo.getClusterState().getRunningQueries() * 3 +
+            clusterInfo.getClusterState().getQueuedQueries();
+      }
+    }.select(clusterInfos);
+    if (selectedClusters.size() == 1) {
+      return selectedClusters.get(0).getProxyServerConfiguration().getProxyTo();
+    }
+
+    // less running query clusters comes first
+    selectedClusters = new ClusterSelector() {
       @Override
       int compare(ClusterInfo clusterInfo, long baseLine) {
         if (clusterInfo.getClusterState().getRunningQueries() < baseLine) {
