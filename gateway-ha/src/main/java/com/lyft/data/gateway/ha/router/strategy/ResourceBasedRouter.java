@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * @author tangyun@bigo.sg
@@ -73,11 +74,21 @@ public class ResourceBasedRouter extends RoutingManager {
     List<ClusterInfo> selectedClusters = new ClusterSelector() {
       @Override
       int compare(ClusterInfo clusterInfo, long baseLine) {
-        if (clusterInfo.getClusterState().getRunningQueries() * 3 +
-            clusterInfo.getClusterState().getQueuedQueries() < baseLine) {
+        final int[] runningFactor = {0};
+        clusterInfo.getQueryInfos().stream().forEach(queryInfo -> {
+          if (queryInfo.getState() == QueryState.WAITING_FOR_RESOURCES ||
+              queryInfo.getState() == QueryState.DISPATCHING ||
+              queryInfo.getState() == QueryState.PLANNING ||
+              queryInfo.getState() == QueryState.RUNNING ||
+              queryInfo.getState() == QueryState.STARTING) {
+            runningFactor[0] += 3;
+          } else if (queryInfo.getState() == QueryState.QUEUED) {
+            runningFactor[0] += 1;
+          }
+        });
+        if (runningFactor[0] < baseLine) {
           return 1;
-        } else if (clusterInfo.getClusterState().getRunningQueries() * 3 +
-            clusterInfo.getClusterState().getQueuedQueries() == baseLine) {
+        } else if (runningFactor[0] == baseLine) {
           return 0;
         }
         return -1;
